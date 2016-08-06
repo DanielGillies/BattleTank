@@ -24,4 +24,7 @@ public:
 
 	// Aim barrel at where xhair is pointing
 	void AimTowardsCrosshair();
+
+	// Return an OUT parameter and true if hit landscape
+	bool GetSightRayHitLocation(FVector& HitLocation) const;
 };
