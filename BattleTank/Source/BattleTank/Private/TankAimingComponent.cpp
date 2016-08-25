@@ -18,6 +18,10 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* Barrel)
 {
+	if (!Barrel)
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO BARREL ATTACHED TO THE UTANKAIMINGCOMPONENT"));
+	}
 	this->Barrel = Barrel;
 }
 
@@ -37,6 +41,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveBarrelTowards(AimDirection);
 		//UE_LOG(LogTemp, Warning, TEXT("%s: Aiming at %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 	}
+	else
+	{
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: No Aim solution found"), Time);
+	}
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
@@ -45,6 +54,5 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	
 	Barrel->Elevate(5);
 }
